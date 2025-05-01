@@ -1,0 +1,91 @@
+/* General Styling */
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #000;
+    color: #FFF;
+}
+
+/* Map Container */
+.map-container {
+    height: 50vh;
+    background: #1A1A1A;
+    border: 2px solid red;
+    border-radius: 10px;
+    margin: 20px auto;
+    box-shadow: 0 4px 10px rgba(230, 57, 70, 0.8);
+}
+
+/* Route Content Styling */
+.route-content {
+    max-width: 500px;
+    margin: 20px auto;
+    text-align: center;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Input Field Styling */
+.route-content input {
+    background-color: black;
+    border: 1px solid #E63946;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.route-content input:focus {
+    outline: none;
+    box-shadow: 0 0 5px red;
+}
+
+/* Button Styling */
+.route-content button {
+    background-color: red;
+    color: #FFF;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.route-content button:disabled {
+    background-color: #5A5A5A;
+    cursor: not-allowed;
+}
+
+.route-content button:hover:enabled {
+    background-color: #B53038;
+    transform: scale(1.05);
+}
+
+/* Error Message Styling */
+.error-message {
+    color: #E63946;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Route Summary Styling */
+.route-summary {
+    margin-top: 20px;
+    background-color: #1A1A1A;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.route-summary p {
+    font-size: 1.1rem;
+    color: #FFF;
+}
+
+.route-summary strong {
+    color: #E63946;
+}

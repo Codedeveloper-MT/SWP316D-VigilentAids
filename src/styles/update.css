@@ -1,0 +1,60 @@
+/* update.css */
+
+/* Container style */
+.update-container {
+    background-color: black;
+    padding: 40px;
+   
+   
+  }
+  
+  /* Title */
+  .update-title {
+    color: red;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  /* Input fields */
+  .update-input {
+    background-color: black;
+    border-radius: 5px;
+  }
+  
+  .update-input-label {
+    color: red !important;
+    font-weight: bold;
+  }
+  
+  /* Buttons */
+  .update-button {
+    background-color: red !important;
+    color: white !important;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .update-button:hover {
+    background-color: darkred !important;
+  }
+  
+  /* Alerts */
+  .update-alert {
+    background-color:red!important;
+    color: darkred !important;
+    font-weight: bold;
+  }
+  
+  .update-success {
+    background-color: #ccffcc !important;
+    color: darkgreen !important;
+    font-weight: bold;
+  }
+  
+  /* Spinner */
+  .update-spinner {
+    color: black;
+  }
+  

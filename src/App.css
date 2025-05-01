@@ -1,0 +1,250 @@
+/* Main Container */
+.welcome-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, 
+      white 0%, 
+      black 50%, 
+      red 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: opacity 0.5s ease;
+  z-index: 1000;
+}
+
+.welcome-container.fade-out {
+  opacity: 0;
+}
+
+/* Particle Background */
+.particle-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(255,0,0,0.2) 0%, transparent 25%),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.2) 0%, transparent 25%);
+  z-index: 1;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Title Styles */
+.main-title {
+  font-size: 4.5rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.title-part {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s forwards;
+  color: black;
+}
+
+.title-part.accent {
+  color: #ff0000;
+  text-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+  margin-left: 0.5rem;
+}
+
+.title-part:nth-child(1) {
+  animation-delay: 0.3s;
+}
+
+.title-part:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+/* Instruction Message */
+.instruction-message {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s 1.5s forwards;
+  position: relative;
+  margin-top: 2rem;
+  color: black;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+
+/* Pulse Circle */
+.pulse-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  border: 2px solid black;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+  pointer-events: none;
+}
+
+/* Speech Indicator */
+.speech-indicator {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid black;
+}
+
+.sound-wave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2rem;
+}
+
+.sound-wave span {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: linear-gradient(to top, #ff0000, #ffffff);
+  border-radius: 0.25rem;
+  animation: soundWave 1.5s infinite ease-in-out;
+  box-shadow: 0 0 5px rgba(255, 0, 0, 0.7);
+}
+
+.sound-wave span:nth-child(1) { animation-delay: 0.1s; }
+.sound-wave span:nth-child(2) { animation-delay: 0.3s; }
+.sound-wave span:nth-child(3) { animation-delay: 0.5s; }
+.sound-wave span:nth-child(4) { animation-delay: 0.7s; }
+
+/* Button Styles */
+.btn-outline-light {
+  border: 2px solid #ff0000;
+  color: white;
+  background: black;
+  padding: 0.5rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  outline: none;
+}
+
+.btn-outline-light:hover {
+  background-color: #ff0000;
+  border-color: #ff0000;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.7;
+    border-color: rgba(255, 0, 0, 0.7);
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.3;
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.5;
+    border-color: rgba(255, 0, 0, 0.5);
+  }
+}
+
+@keyframes soundWave {
+  0%, 100% {
+    height: 0.5rem;
+    background: linear-gradient(to top, #ff0000, #ffffff);
+  }
+  50% {
+    height: 2rem;
+    background: linear-gradient(to top, #ffffff, #ff0000);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 3rem;
+    flex-direction: column;
+  }
+  
+  .title-part.accent {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+  
+  .content-wrapper {
+    padding: 1.5rem;
+    width: 90%;
+  }
+  
+  .instruction-message {
+    font-size: 1rem;
+  }
+  
+  .pulse-circle {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .btn-outline-light {
+    padding: 0.4rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .main-title {
+    font-size: 2.2rem;
+  }
+  
+  .instruction-message {
+    font-size: 0.9rem;
+  }
+  
+  .sound-wave span {
+    width: 0.4rem;
+  }
+}

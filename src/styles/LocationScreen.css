@@ -1,0 +1,179 @@
+/* Base Styles */
+.location-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: black;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    color: white;
+  }
+  
+  /* Accent Bars */
+  .location-decoration {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: red;
+  }
+  .location-decoration-top {
+    top: 0;
+  }
+  .location-decoration-bottom {
+    bottom: 0;
+  }
+  
+  /* Card Container */
+  .location-card {
+    background-color: black;
+    border: 2px solid red;
+    border-radius: 10px;
+    padding: 25px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+  
+  /* Typography */
+  .location-title {
+    font-size: 28px;
+    margin-bottom: 25px;
+  }
+  .location-title span {
+    color: red;
+  }
+  
+  /* Buttons */
+  .location-button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .location-button:active {
+    transform: scale(0.98);
+  }
+  
+  .button-primary {
+    background-color: red;
+    color: white;
+  }
+  .button-primary:hover {
+    background-color: #cc0000;
+  }
+  
+  .button-secondary {
+    background-color: black;
+    color: white;
+    border: 2px solid red;
+  }
+  .button-secondary:hover {
+    background-color: #111;
+  }
+  
+  .button-disabled {
+    background-color: #333;
+    color: #999;
+    cursor: not-allowed;
+  }
+  
+  /* Location Display */
+  .location-info {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #111;
+    border-radius: 5px;
+  }
+  .location-place-name {
+    color: red;
+    font-weight: bold;
+    font-size: 22px;
+    margin-bottom: 5px;
+  }
+  .location-coordinates {
+    color: #ccc;
+    font-size: 14px;
+  }
+  
+  /* Loading States */
+  .location-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .location-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 0, 0, 0.3);
+    border-top-color: red;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+  }
+  
+  /* Error States */
+  .location-error {
+    color: red;
+    margin: 15px 0;
+  }
+  
+  /* Footer */
+  .location-footer {
+    margin-top: 30px;
+    color: #777;
+    font-size: 12px;
+  }
+  
+  /* Animations */
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  /* Pulse Effect */
+  .location-pulse {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: rgba(255, 0, 0, 0.2);
+    border-radius: 50%;
+    z-index: 1;
+    animation: pulse 2s infinite;
+  }
+
+.location-back-button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 10;
+    padding: 0.5rem 1rem;
+    border: 1px solid red;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+  
+  .location-back-button:hover {
+    background-color: rgba(255, 0, 0, 0.2);
+  }
+  
+ 
