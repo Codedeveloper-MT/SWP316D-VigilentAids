@@ -1,309 +1,143 @@
-/* Container */
-.registration-container {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(to bottom right, #8B0000, #000);
-    color: white;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 1s ease-in-out;
+/* Base Styles */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
-
-/* Fade In Animation */
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-/* Form Container */
+/*
 .form-container {
-    background-color: black;
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 0 20px rgba(15, 13, 13, 0.5);
-    width: 90%;
-    max-width: 450px;
-    transition: transform 0.3s ease;
-    animation: slideUp 0.8s ease-out;
+  background: black;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(128, 0, 0, 0.2);
+  width: 100%;
+  max-width: 500px;
+  border: 2px solid #800000;
 }
 
-/* Slide Up Animation */
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Form Hover Effect */
-.form-container:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
-}
-
-/* Form Heading */
 .form-container h2 {
-    text-align: center;
-    font-size: 2rem;
-    color: red;
-    font-weight: bold;
-    border-bottom: 2px solid red;
-    padding-bottom: 8px;
-    margin-bottom: 25px;
-    animation: pulseText 2s infinite;
+  color: #800000;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: bold;
 }
 
-/* Pulse Text Animation */
-@keyframes pulseText {
-    0%, 100% { color: red; }
-    50% { color:white; }
+/* Form Elements */
+.form-container input {
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+  border: 1px solid #800000;
+  color: #000000;
+  border-radius: 10px;
 }
 
-/* Ion Item */
-ion-item {
-    --background: transparent;
-    --border-color: #333;
-    --highlight-color-focused: red;
-    --padding-start: 0;
-    --inner-padding-end: 0;
-    margin-bottom: 10px;
-    transition: all 0.3s ease;
+.form-container input:focus {
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #ff0000;
+  box-shadow: 0 0 10px #ff0000;
+  outline: none;
 }
 
-/* Ion Item Hover */
-ion-item:hover {
-    --border-color: black;
+.form-container input::placeholder {
+  color: #999;
 }
 
-
-
-/* Ion Input */
-ion-input {
-    --color: #fff;
-    --padding-start: 10px !important;
-    --background: #111;
-    --border-radius: 4px;
-    --border-color: red;
-    --box-shadow: inset 0 0 5px rgba(255, 0, 0, 0.5);
-    transition: all 0.3s ease;
-}
-
-ion-input:hover {
-    --box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
-}
-
-ion-input:focus-within {
-    --border-width: 2px;
-    --box-shadow: 0 0 15px red;
-}
-
-/* Button Group */
-.button-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 30px;
-}
-
-/* Ion Button Base */
-ion-button {
-    --border-radius: 8px;
-    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    --transition: all 0.3s ease;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    height: 10px;
-    text-transform: uppercase;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease-in-out;
-}
-
-/* Main Register Button */
-ion-button[type="submit"] {
-    --background: linear-gradient(135deg, #ff0000 0%, #8B0000 100%);
-    --color: white;
-    --background-activated: #b30000;
-    --background-hover: #8B0000;
-    border: 2px solid #ff0000;
-}
-
-/* Success Button */
-ion-button[color="success"] {
-    --background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
-    --color: white;
-    --background-activated: #218838;
-    --background-hover: #1e7e34;
-    border: 2px solid #28a745;
-}
-
-/* Danger Button */
-ion-button[color="danger"] {
-    --background: linear-gradient(135deg, #dc3545 0%, #a71d2a 100%);
-    --color: white;
-    --background-activated: #c82333;
-    --background-hover: #a71d2a;
-    border: 2px solid #dc3545;
-}
-
-/* Medium Button (Back to Login) */
-ion-button[color="medium"] {
-    --background: transparent;
-    --color: #ff0000;
-    --border-color: #ff0000;
-    --border-width: 2px;
-    --background-hover: rgba(255, 0, 0, 0.1);
-    --background-activated: rgba(255, 0, 0, 0.2);
-}
-
-/* Button Hover Effects */
-ion-button:hover {
-    transform: translateY(-2px);
-    --box-shadow: 0 6px 12px rgba(255, 0, 0, 0.3);
-}
-
-/* Button Active Press */
-ion-button:active {
-    transform: translateY(1px);
-    --box-shadow: 0 2px 4px rgba(255, 0, 0, 0.3);
-}
-
-/* Button Ripple Effect */
-ion-button::part(native)::after {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-/* Password Strength Section */
+/* Password Strength Meter */
 .password-strength {
-    margin-top: -15px;
-    margin-bottom: 20px;
-    animation: fadeIn 0.5s ease-out;
+  margin: 1rem 0;
+  color: #800000;
 }
 
-/* Strength Meter */
 .strength-meter {
-    display: flex;
-    gap: 5px;
-    margin-top: 8px;
-    height: 6px;
+  display: flex;
+  gap: 4px;
+  margin-top: 0.5rem;
 }
 
-/* Strength Bars */
-.strength-bar {
-    flex: 1;
-    border-radius: 3px;
-    transition: all 0.3s ease;
+.strength-meter .bar {
+  height: 4px;
+  flex-grow: 1;
+  background-color: #333;
+  border-radius: 2px;
 }
 
-.strength-bar.danger {
-    background-color: #ff0000;
+.strength-meter .bar.filled {
+  background-color: #ff0000;
 }
 
-.strength-bar.warning {
-    background-color: #ffc107;
+/* Button Styles */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
 }
 
-.strength-bar.success {
-    background-color: #28a745;
+.btn-register {
+  background-color: #ff0000;
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 10px;
+  transition: all 0.3s;
 }
 
-.strength-bar.medium {
-    background-color: #333;
+.btn-register:hover {
+  background-color: #800000;
+  color: #ffffff;
+  box-shadow: 0 0 20px #ff0000, 0 0 30px #800000;
 }
 
-/* Assistant Button Pulse Animation */
-.assistant-active {
-    animation: pulse 1.5s infinite;
+.btn-assistant, .btn-login {
+  background-color: transparent;
+  border: 1px solid #800000;
+  color: #000000;
+  padding: 0.75rem;
+  border-radius: 10px;
+  transition: all 0.3s;
 }
 
-/* Pulse Keyframes */
-@keyframes pulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
-        transform: scale(1);
-    }
-    70% {
-        box-shadow: 0 0 0 12px rgba(255, 0, 0, 0);
-        transform: scale(1.02);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
-        transform: scale(1);
-    }
+.btn-assistant:hover, .btn-login:hover {
+  background-color: rgba(128, 0, 0, 0.1);
 }
 
-/* Ion Loading Spinner */
-ion-loading {
-    --spinner-color: red;
-    --background: rgba(0, 0, 0, 0.8);
-    --backdrop-opacity: 0.8;
+/* Status Messages */
+.loading {
+  color: #ff0000;
+  text-align: center;
+  margin: 1rem 0;
+  font-style: italic;
 }
 
-/* Ion Alert */
-ion-alert {
-    --background: #000;
-    --backdrop-opacity: 0.8;
-    --color: white;
-    --button-background: red;
-    --button-color: white;
-    --button-background-hover: #b30000;
+.alert {
+  padding: 0.75rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: bold;
+  background-color: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  color: #800000;
 }
 
-/* Alert Text */
-ion-alert::part(message) {
-    color: white;
-}
-
-ion-alert::part(header) {
-    color: red;
-    font-weight: bold;
-}
-
-/* Responsive Design */
-@media (max-width: 480px) {
-    .form-container {
-        padding: 25px;
-    }
-    
-    .form-container h2 {
-        font-size: 1.5rem;
-    }
-    
-    .button-group {
-        gap: 12px;
-    }
-    
-    ion-button {
-        height: 45px;
-        font-size: 0.9rem;
-    }
-}
-label.phone-label {
-    display: block;
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 10px;
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+  .form-container {
+    margin: 1rem;
+    padding: 1.5rem;
   }
-
-  input.phone-input {
-    width: 100%;
-    padding: 12px 14px;
-    margin-top: 8px;
-    border: 2px solid red;
-    border-radius: 10px;
-    background-color: #111;
-    color: #fff;
-    font-size: 16px;
-    transition: border-color 0.3s, box-shadow 0.3s;
-  }
-
-  input.phone-input:focus {
-    border-color: #ff0000;
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
-    outline: none;
-  }
-
-  input.phone-input::placeholder {
-    color: #aaa;
-  }
+}

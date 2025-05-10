@@ -67,18 +67,6 @@ const SettingAccount = () => {
         className="settings-button"
         onClick={() => {
           window.speechSynthesis.cancel();
-          navigate('/vigilent-members');
-        }}
-        sx={{ mb: 2 }}
-      >
-        Vigilent Members
-      </Button>
-      <Button
-        variant="contained"
-        fullWidth
-        className="settings-button"
-        onClick={() => {
-          window.speechSynthesis.cancel();
           navigate('/vee-settings');
         }}
         sx={{ mb: 2 }}

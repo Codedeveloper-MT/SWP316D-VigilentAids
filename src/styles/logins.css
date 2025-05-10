@@ -1,241 +1,129 @@
+/* logins.css */
 
+/* Base Styles */
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(to bottom right, #8B0000, #000);
-    color:white;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 1s ease-in-out;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Form Container */
+.form-container {
+  background: #111111;
+  padding: 20px; 
+  border-radius: 15px; 
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+  width: 100%; 
+  max-width: 500px;
+  border: 2px solid #ff0000;
+  transition: transform 0.3s ease;
+}
+
+/* Header Style */
+.form-container h2 {
+  color: #ff0000;
+  font-size: 1.5rem; 
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: bold;
+  text-shadow: 0 0 8px #ff0000, 0 0 12px #ff0000;
+}
+
+/* Form Input Fields */
+.form-container input {
+  width: 100%;
+  padding: 0.5rem 0.75rem; 
+  margin-bottom: 0.75rem; 
+  background-color: transparent;
+  border: 1px solid #ff0000;
+  color: #ffffff;
+  border-radius: 8px; 
+  font-size: 0.9rem; 
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-container input:focus {
+  background-color: #111111;
+  color: #ffffff;
+  border-color: red;
+  box-shadow: 0 0 8px maroon, 0 0 15px #ff0000;
+  outline: none;
+}
+
+.form-container input::placeholder {
+  color: #ccc;
+  font-size: 0.85rem; /* Smaller placeholder text */
+}
+
+/* Button Styles */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; 
+  margin-top: 1rem;
+}
+
+.btn-primary {
+  background-color: #ff0000;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem; /* Reduced padding */
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 8px;
+  font-size: 0.9rem; /* Reduced font size */
+  transition: all 0.3s;
+  box-shadow: 0 0 10px #ff0000, 0 0 15px #ff0000;
+}
+
+.btn-primary:hover {
+  background-color: #ffffff;
+  color: #000000;
+  box-shadow: 0 0 20px #ff0000, 0 0 30px #ff0000;
+}
+
+.btn-link {
+  background-color: transparent;
+  border: 1px solid #ff0000;
+  color: #ffffff;
+  padding: 0.5rem; /* Reduced padding */
+  border-radius: 8px;
+  font-size: 0.85rem; /* Reduced font size */
+  transition: all 0.3s;
+}
+
+.btn-link:hover {
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+/* Status Messages */
+.message {
+  padding: 0.5rem; /* Reduced padding */
+  border-radius: 8px;
+  margin-bottom: 0.75rem; /* Reduced margin */
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.85rem; /* Reduced font size */
+  background-color: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  color: #ff0000;
+  text-shadow: 0 0 8px #ff0000, 0 0 12px #ff0000;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+  .form-container {
+    margin: 0.5rem; 
+    padding: 1rem; 
   }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-  
-  /* === CONTAINER STYLES === */
-  .container,
-  .update-container,
-  .delete-container,
-  .login-container {
-    background-color: black;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 0 20px rgba(10, 8, 8, 0.5);
-    width: 90%;
-    max-width: 450px;
-    transition: transform 0.3s ease;
-  }
-  
-  .container:hover,
-  .update-container:hover,
-  .delete-container:hover {
-    transform: scale(1.02);
-  }
-  
-  /* === TITLES === */
-  h2,
-  .update-title,
-  .delete-title {
-    text-align: center;
-    font-size: 2rem;
-    color: red;
-    font-weight: bold;
-    border-bottom: 2px solid red;
-    padding-bottom: 10px;
-    margin-bottom: 25px;
-    animation: pulseText 2s infinite;
-  }
-  
-  @keyframes pulseText {
-    0%, 100% { color: red; }
-    50%      { color: white; }
-  }
-  
-  /* === FORMS & INPUTS === */
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  input[type="text"],
-  input[type="password"],
-  .update-input input,
-  .delete-input input {
-    width: 100%;
-    padding: 0.9rem;
-    border-radius: 6px;
-    border: 1px solid red;
-    background-color: black;
-    color: white;
-    box-shadow: inset 0 0 5px rgba(255, 0, 0, 0.5);
-    transition: all 0.3s ease;
-  }
-  
-  input[type="text"]:hover,
-  input[type="password"]:hover,
-  .update-input input:hover,
-  .delete-input input:hover {
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
-  }
-  
-  input:focus {
-    outline: none;
-    border: 2px solid red;
-    box-shadow: 0 0 15px red;
-  }
-  
-  input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-  }
-  
-  .update-input-label,
-  .delete-input-label {
-    color: red !important;
-    font-weight: bold;
-  }
-  
-  /* === BUTTONS === */
-  button,
-  .update-button,
-  .delete-button,
-  .delete-dialog-confirm {
-    background-color: red !important;
-    color: white !important;
-    font-weight: bold;
-    font-size: 1rem;
-    padding: 0.9rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  button:hover,
-  .update-button:hover,
-  .delete-button:hover,
-  .delete-dialog-confirm:hover {
-    background-color: #b30000 !important;
-    transform: scale(1.05);
-  }
-  
-  button:active {
-    background-color: #a00000;
-    transform: scale(0.95);
-  }
-  
-  /* Loading Spinner on Button */
-  button.loading {
-    pointer-events: none;
-    color: transparent;
-  }
-  button.loading::after {
-    content: '';
-    width: 20px;
-    height: 20px;
-    border: 3px solid #fff;
-    border-top: 3px solid red;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-  @keyframes spin {
-    to { transform: translate(-50%, -50%) rotate(360deg); }
-  }
-  
-  /* Back & Cancel Buttons */
-  .delete-dialog-button {
-    color: red !important;
-    border: 1px solid red !important;
-    background-color: transparent !important;
-    transition: all 0.3s ease;
-  }
-  
-  .delete-dialog-button:hover {
-    background-color: red !important;
-    color: white !important;
-  }
-  
-  /* === ALERTS === */
-  p,
-  .update-alert,
-  .delete-alert,
-  .update-success {
-    text-align: center;
-    font-size: 1rem;
-    font-weight: bold;
-    margin-top: 1rem;
-    padding: 10px;
-    border-radius: 6px;
-  }
-  
-  .update-alert {
-    background-color: red !important;
-    color: darkred !important;
-  }
-  
-  .delete-alert {
-    background-color: #ffcccc !important;
-    color: red !important;
-    border: 1px solid red;
-  }
-  
-  .update-success {
-    background-color: #ccffcc !important;
-    color: darkgreen !important;
-  }
-  
-  /* === DIALOG STYLES === */
-  .delete-dialog {
-    background-color: #000 !important;
-    color: white;
-    border: 1px solid red;
-  }
-  .delete-dialog-title {
-    color: red !important;
-    font-weight: bold;
-  }
-  .delete-dialog-text {
-    color: white;
-  }
-  .delete-dialog-actions {
-    display: flex;
-    justify-content: space-between;
-    padding: 16px;
-  }
-  
-  /* === SPINNER === */
-  .update-spinner {
-    color: white;
-    font-size: 1.5rem;
-  }
-  .button-group {
-    display: flex;
-    flex-direction: row; 
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  button {
-    padding: 10px;
-    background-color: #4CAF50; 
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
+}

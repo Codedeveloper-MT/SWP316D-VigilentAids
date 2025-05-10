@@ -1,22 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { App } from "@capacitor/app";
+import { Toast } from "@capacitor/toast";
+import axios from "axios";
 import {
-  Box, TextField, Button, Typography, Container,
-  Alert, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
-} from '@mui/material';
+  TextField,
+  Button,
+  Container,
+  Alert,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import "../styles/update.css";
 
 const UserUpdate = () => {
-  const [country, setCountry] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    country: "",
+    phone: "",
+    password: "",
+  });
+
+  const [message, setMessage] = useState("");
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const navigate = useNavigate();
 
-  const speak = (text) => {
+  const speak = async (text) => {
     if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
@@ -27,122 +38,105 @@ const UserUpdate = () => {
 
   useEffect(() => {
     speak("You are about to update your account. Please enter your details.");
+    const backButtonHandler = App.addListener("backButton", ({ canGoBack }) => {
+      if (!canGoBack) {
+        speak("Exiting the app.");
+        App.exitApp();
+      }
+    });
+
+    return () => {
+      backButtonHandler.remove();
+    };
   }, []);
 
-  const handleUpdate = () => {
-    if (!country.trim() && !phone.trim() && !password.trim()) {
-      setError("Nothing to update.");
-      speak("Nothing to update.");
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleUpdate = async () => {
+    const username = localStorage.getItem("loggedInUsername");
+
+    if (!username) {
+      setMessage("Error: No logged-in user found.");
+      await Toast.show({ text: "Error: No logged-in user found." });
       return;
     }
-    setConfirmDialogOpen(true);
-    speak("You have made changes. Do you want to proceed?");
-  };
 
-  const handleConfirmDialogClose = async (proceed) => {
-    setConfirmDialogOpen(false);
-    if (proceed) {
-      setLoading(true);
-      setError('');
-      setSuccess('');
-      try {
-        // Simulate an API call to update user details
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        setSuccess('Your account has been updated successfully!');
-        speak("Your account has been updated successfully!");
-        setCountry('');
-        setPhone('');
-        setPassword('');
-      } catch (err) {
-        speak("Failed to update your details");
-        setError('Failed to update your details. Please try again.');
-      } finally {
-        setLoading(false);
+    try {
+      const response = await axios.put("http://localhost:5000/api/update", {
+        username,
+        ...formData,
+      });
+
+      if (response.data.success) {
+        setMessage("User details updated successfully!");
+        await Toast.show({ text: "User details updated successfully!" });
+        setTimeout(() => {
+          navigate("/delete");
+        }, 2000);
       }
-    } else {
-      speak("Update canceled.");
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error || "An error occurred while updating details.";
+      setMessage(errorMessage);
+      await Toast.show({ text: errorMessage });
     }
   };
 
-  const handleBack = () => {
-    window.speechSynthesis.cancel();
-    navigate(-1);
-  };
-
-  const handleFieldFocus = (fieldName) => {
-    speak(`Enter your ${fieldName}`);
+  const handleConfirmDialogClose = async (confirm) => {
+    setConfirmDialogOpen(false);
+    if (confirm) {
+      await handleUpdate();
+    }
   };
 
   return (
-    <Container maxWidth="sm" className="update-container" sx={{ mt: 8 }}>
-      <Typography variant="h4" component="h1" className="update-title" gutterBottom align="center">
-        Update Account
-      </Typography>
+    <Container>
+      <div className="update-container">
+        <h2>Update Your Details</h2>
+        {message && <Alert severity="info">{message}</Alert>}
 
-      {error && (
-        <Alert severity="error" className="update-alert" sx={{ mb: 3 }}>
-          {error}
-        </Alert>
-      )}
-      {success && (
-        <Alert severity="success" className="update-success" sx={{ mb: 3 }}>
-          {success}
-        </Alert>
-      )}
-
-      <Box component="form" className="update-form" onSubmit={(e) => { e.preventDefault(); handleUpdate(); }}>
-        <TextField
-          className="update-input"
-          InputLabelProps={{ className: "update-input-label" }}
-          fullWidth
-          margin="normal"
-          label="Country"
-          value={country}
-          onChange={(e) => setCountry(e.target.value)}
-          onFocus={() => handleFieldFocus("country")}
-        />
-        <TextField
-          className="update-input"
-          InputLabelProps={{ className: "update-input-label" }}
-          fullWidth
-          margin="normal"
-          label="Phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          onFocus={() => handleFieldFocus("phone number")}
-        />
-        <TextField
-          className="update-input"
-          InputLabelProps={{ className: "update-input-label" }}
-          fullWidth
-          margin="normal"
-          label="New Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          onFocus={() => handleFieldFocus("new password")}
-        />
-        <Button
-          className="update-button"
-          fullWidth
-          variant="contained"
-          disabled={loading}
-          sx={{ mt: 3, mb: 2, py: 1.5 }}
-          type="submit"
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            setConfirmDialogOpen(true);
+          }}
         >
-          {loading ? <CircularProgress size={24} className="update-spinner" /> : 'Update Details'}
-        </Button>
-        <Button
-          fullWidth
-          variant="outlined"
-          onClick={handleBack}
-          sx={{ mt: 1, mb: 2 }}
-        >
-          Back
-        </Button>
-      </Box>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Country"
+            name="country"
+            value={formData.country}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Phone Number"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="New Password"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+          <Button type="submit" variant="contained" color="primary">
+            Update
+          </Button>
+        </form>
+      </div>
 
-      {/* Confirmation Dialog */}
       <Dialog
         open={confirmDialogOpen}
         onClose={() => handleConfirmDialogClose(false)}
@@ -150,7 +144,8 @@ const UserUpdate = () => {
         <DialogTitle>Confirm Changes</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            You have made changes to your account. Do you want to proceed with the update?
+            You have made changes to your account. Do you want to proceed with
+            the update?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

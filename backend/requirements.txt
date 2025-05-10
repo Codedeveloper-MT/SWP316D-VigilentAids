@@ -1,0 +1,67 @@
+from ultralytics import YOLO
+import cv2
+
+# Load pretrained YOLOv8 model (Nano is light and fast)
+model = YOLO("yolov8n.pt")  # pretrained on the full COCO dataset
+
+# ---------------------- IMAGE TEST (Commented Out) --------------------------
+# img_path = "Resources/swae.jfif"  # your test image here
+# img = cv2.imread(img_path)
+#
+# # Run object detection
+# results = model(img)[0]
+#
+# # Loop through results and annotate detected objects
+# for box in results.boxes:
+#     cls_id = int(box.cls[0])
+#     conf = float(box.conf[0])
+#     label = model.names[cls_id]
+#
+#     x1, y1, x2, y2 = map(int, box.xyxy[0])
+#     cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+#     cv2.putText(img, f"{label} {conf:.2f}", (x1, y1 - 10),
+#                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+#
+# # Show the image in a resizable window
+# cv2.namedWindow("Detected Image", cv2.WINDOW_NORMAL)
+# cv2.imshow("Detected Image", img)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+# ---------------------- VIDEO TEST --------------------------
+
+# Video path (replace with your test video path)
+video_path = "Resources/y2mate.com - J Cole  Heavens EP Official Music Video_1080p.mp4"
+cap = cv2.VideoCapture(video_path)
+
+# Create resizable window
+cv2.namedWindow("YOLOv8 Video Detection", cv2.WINDOW_NORMAL)
+
+while True:
+    success, frame = cap.read()
+    if not success:
+        break
+
+    # Run object detection
+    results = model(frame)[0]
+
+    # Annotate detections
+    for box in results.boxes:
+        cls_id = int(box.cls[0])
+        conf = float(box.conf[0])
+        label = model.names[cls_id]
+
+        x1, y1, x2, y2 = map(int, box.xyxy[0])
+        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        cv2.putText(frame, f"{label} {conf:.2f}", (x1, y1 - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+
+    # Show frame
+    cv2.imshow("YOLOv8 Video Detection", frame)
+
+    # Press 'q' to quit
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()

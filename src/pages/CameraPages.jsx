@@ -1,209 +1,157 @@
-import React, { useState, useEffect } from "react";
-import { CameraPreview } from "@capacitor-community/camera-preview";
-import { App } from "@capacitor/app"; // Import the App plugin
-import { Button, Box, Typography, Stack } from "@mui/material";
-import { useNavigate } from "react-router-dom"; // For navigation
+import React, { useState, useRef } from 'react';
+import { CameraPreview } from '@capacitor-community/camera-preview';
+import { TextToSpeech } from '@capacitor-community/text-to-speech';
+import { Button, Box, Typography, Stack, Chip, CircularProgress } from '@mui/material';
+import axios from 'axios';
 
 const CameraPage = () => {
-  const [cameraDirection, setCameraDirection] = useState("rear"); // State to toggle between front and back cameras
-  const [photo, setPhoto] = useState(null); // State to store the captured photo
-  const [isCameraActive, setIsCameraActive] = useState(false); // State to track if the camera is active
-  const navigate = useNavigate(); // React Router navigation
+  const [cameraActive, setCameraActive] = useState(false);
+  const [photo, setPhoto] = useState(null);
+  const [detections, setDetections] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const cameraRef = useRef(null);
 
-  const startCamera = async () => {
-    try {
-      await CameraPreview.start({
-        position: cameraDirection,
-        parent: "cameraPreview", // The ID of the container for the camera preview
-        className: "camera-preview", // Optional CSS class for styling
-      });
-      setIsCameraActive(true);
-    } catch (error) {
-      console.error("Error starting camera:", error);
-    }
-  };
-
-  const stopCamera = async () => {
-    try {
-      await CameraPreview.stop();
-      setIsCameraActive(false);
-    } catch (error) {
-      console.error("Error stopping camera:", error);
-    }
-  };
-
-  const takePicture = async () => {
-    try {
-      const result = await CameraPreview.capture({
-        quality: 90,
-      });
-      setPhoto(`data:image/jpeg;base64,${result.value}`); // Save the captured photo
-      stopCamera(); // Stop the camera after taking the picture
-    } catch (error) {
-      console.error("Error taking picture:", error);
-    }
-  };
-
+  // Start/Stop Camera
   const toggleCamera = async () => {
-    const newDirection = cameraDirection === "rear" ? "front" : "rear";
-    setCameraDirection(newDirection);
-    if (isCameraActive) {
-      await stopCamera();
-      await startCamera();
+    if (cameraActive) {
+      await CameraPreview.stop();
+    } else {
+      await CameraPreview.start({
+        position: 'rear',
+        parent: 'cameraPreview',
+        width: window.innerWidth,
+        height: window.innerHeight * 0.7,
+        toBack: true
+      });
     }
+    setCameraActive(!cameraActive);
   };
 
-  const handleBackButton = async () => {
-    if (isCameraActive) {
-      await stopCamera(); // Stop the camera if it's active
+  // Capture and Detect
+  const captureAndDetect = async () => {
+    setLoading(true);
+    try {
+        // Capture photo
+        const { value } = await CameraPreview.capture({ quality: 90 });
+        const photoSrc = `data:image/jpeg;base64,${value}`;
+        setPhoto(photoSrc);
+
+        // Convert to blob for API
+        const blob = await (await fetch(photoSrc)).blob();
+        const formData = new FormData();
+        formData.append('image', blob, 'capture.jpg');
+
+        // Send to YOLOv8 API
+        const { data } = await axios.post('http://127.0.0.1:5000/detect', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        setDetections(data.detections);
+
+        // Speak results
+        if (data.detections.length > 0) {
+            const objects = data.detections
+                .map(d => `${d.class} (${Math.round(d.confidence * 100)}%)`)
+                .join(', ');
+            await TextToSpeech.speak({ text: `Detected: ${objects}` });
+        } else {
+            await TextToSpeech.speak({ text: 'No objects detected' });
+        }
+    } catch (error) {
+        console.error('Detection error:', error);
+        await TextToSpeech.speak({ text: 'Detection failed' });
+    } finally {
+        setLoading(false);
     }
-    navigate("/screenPage"); // Navigate back to the home page or previous screen
   };
-
-  useEffect(() => {
-    const backButtonListener = App.addListener("backButton", handleBackButton);
-
-    return () => {
-      backButtonListener.remove(); // Clean up the listener when the component unmounts
-    };
-  }, [isCameraActive, navigate]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh",
-        backgroundColor: "#000000",
-        color: "#ffffff",
-        padding: 2,
-      }}
-    >
-      <Typography variant="h4" sx={{ marginBottom: 3, fontWeight: "bold" }}>
-        Camera App
-      </Typography>
-
-      <Box
+    <Box sx={{
+      height: '100vh',
+      bgcolor: '#121212',
+      color: 'white',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      {/* Camera Preview */}
+      <Box 
         id="cameraPreview"
+        ref={cameraRef}
         sx={{
-          width: "100%",
-          height: "60%",
-          backgroundColor: "#000000",
-          border: "2px solid #ffffff",
-          borderRadius: "10px",
-          marginBottom: 3,
-          display: isCameraActive ? "block" : "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          flex: 1,
+          position: 'relative',
+          border: '2px solid #444',
+          borderRadius: 2,
+          m: 2,
+          overflow: 'hidden'
         }}
       >
-        {!isCameraActive && !photo && (
-          <Typography
-            variant="body1"
-            sx={{
-              color: "#ffffff",
-              textAlign: "center",
-            }}
-          >
-            Camera preview will appear here.
-          </Typography>
+        {!cameraActive && (
+          <Box sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            bgcolor: '#000'
+          }}>
+            <Typography>Camera is off</Typography>
+          </Box>
         )}
       </Box>
 
-      {photo ? (
-        <Box
-          component="img"
-          src={photo}
-          alt="Captured"
-          sx={{
-            width: "80%",
-            height: "auto",
-            borderRadius: "10px",
-            marginBottom: 3,
-            border: "2px solid #ffffff",
-          }}
-        />
-      ) : null}
-
-      {isCameraActive && (
-        <Stack direction="row" spacing={2} sx={{ marginBottom: 2 }}>
-          <Button
-            variant="contained"
-            onClick={takePicture}
-            sx={{
-              backgroundColor: "#ff0000",
-              color: "#ffffff",
-              "&:hover": {
-                backgroundColor: "#cc0000",
-              },
-            }}
-          >
-            Take Picture
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={toggleCamera}
-            sx={{
-              borderColor: "#ffffff",
-              color: "#ffffff",
-              "&:hover": {
-                borderColor: "#cccccc",
-                color: "#cccccc",
-              },
-            }}
-          >
-            Switch to {cameraDirection === "rear" ? "Front" : "Back"} Camera
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={stopCamera}
-            sx={{
-              borderColor: "#ffffff",
-              color: "#ffffff",
-              "&:hover": {
-                borderColor: "#cccccc",
-                color: "#cccccc",
-              },
-            }}
-          >
-            Stop Camera
-          </Button>
-        </Stack>
-      )}
-
-      {photo && (
-        <Button
-          variant="outlined"
-          onClick={() => setPhoto(null)}
-          sx={{
-            borderColor: "#ffffff",
-            color: "#ffffff",
-            "&:hover": {
-              borderColor: "#cccccc",
-              color: "#cccccc",
-            },
-          }}
-        >
-          Clear Photo
-        </Button>
-      )}
-
-      {!isCameraActive && (
+      {/* Controls */}
+      <Stack direction="row" spacing={2} sx={{ p: 2, justifyContent: 'center' }}>
         <Button
           variant="contained"
-          onClick={startCamera}
-          sx={{
-            backgroundColor: "#ff0000",
-            color: "#ffffff",
-            "&:hover": {
-              backgroundColor: "#cc0000",
-            },
-          }}
+          color={cameraActive ? 'error' : 'success'}
+          onClick={toggleCamera}
+          disabled={loading}
         >
-          Start Camera
+          {cameraActive ? 'Stop Camera' : 'Start Camera'}
         </Button>
+
+        {cameraActive && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={captureAndDetect}
+            disabled={loading}
+            startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
+          >
+            {loading ? 'Processing...' : 'Detect Objects'}
+          </Button>
+        )}
+      </Stack>
+
+      {/* Results */}
+      {photo && (
+        <Box sx={{ p: 2, borderTop: '1px solid #444' }}>
+          <Typography variant="h6" gutterBottom>
+            Detection Results:
+          </Typography>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
+            {detections.map((d, i) => (
+              <Chip
+                key={i}
+                label={`${d.class} (${Math.round(d.confidence * 100)}%)`}
+                color="primary"
+                variant="outlined"
+              />
+            ))}
+          </Box>
+          <Box
+            component="img"
+            src={photo}
+            sx={{
+              width: '100%',
+              borderRadius: 2,
+              border: '1px solid #444'
+            }}
+          />
+        </Box>
       )}
     </Box>
   );

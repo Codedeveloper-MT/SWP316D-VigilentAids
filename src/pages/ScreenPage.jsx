@@ -101,16 +101,6 @@ const ScreenPage = () => {
           </Link>
 
           <Link
-            to="/messages"
-            className="nav-button messages-button"
-            onMouseEnter={() => handleButtonHover("Messages")}
-            onFocus={() => handleButtonHover("Messages")}
-          >
-            <span className="button-icon">✉️</span>
-            <span className="button-text">Messages</span>
-          </Link>
-
-          <Link
             to="/settings"
             className="nav-button settings-button"
             onMouseEnter={() => handleButtonHover("Account Settings")}

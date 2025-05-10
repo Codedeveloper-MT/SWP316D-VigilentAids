@@ -9,7 +9,6 @@ import RouteScreen from "./pages/RouteScreen";
 import VeeScreen from "./pages/veeScreen";
 import SettingAccount from "./pages/SettingAccount";
 import UserUpdate from "./pages/UserUpdate";
-import MessagePage from "./pages/MessagePage";
 import CameraPage from "./pages/CameraPages"; 
 
 function App() {
@@ -26,7 +25,6 @@ function App() {
         <Route path="/vee" element={<VeeScreen />} />
         <Route path="/settings" element={<SettingAccount />} />
         <Route path="/update" element={<UserUpdate />} />
-        <Route path="/messages" element={<MessagePage />} />
         <Route path="/camera" element={<CameraPage />} />
       </Routes>
     </Router>
